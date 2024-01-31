@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import Dashbord from "../components/content/Dashbord.vue"
 import Todolist from "../components/content/Todolist.vue";
 import Surmas from "../components/content/ptsp/SuratMasuk.vue";
@@ -23,7 +23,7 @@ const routes = [
   },
 ];
  const router = createRouter({
-   history: createWebHashHistory(),
+   history: createWebHistory(),
    routes,
  });
 

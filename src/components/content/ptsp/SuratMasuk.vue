@@ -1,6 +1,10 @@
 <script setup>
+import { useSuratMasuk } from "@/strore/suratMasuk";
 import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from "vue";
 import axios from "axios";
+
+const storeSuratMasuk = useSuratMasuk()
+
 const alert = ref(false);
 const alertError = ref(false);
 const pakai = reactive({
@@ -77,7 +81,7 @@ function submitForm(e) {
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form @submit.prevent="submitForm">
+  <form @submit.prevent="storeSuratMasuk.saveSurmas">
     <div class="row border mb-2">
       <div class="col-12 col-md-6">
         <div class="input-group input-group-sm">
@@ -88,7 +92,7 @@ function submitForm(e) {
           </div>
         </div>
         <div class="input-group input-group-sm">
-          <input type="text" class="form-control" name="nomorSurat" />
+          <input v-model="storeSuratMasuk.data.nomorSurat" type="text" class="form-control" name="nomorSurat" />
         </div>
       </div>
 
