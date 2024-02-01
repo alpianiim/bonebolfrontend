@@ -30,19 +30,6 @@ onBeforeUnmount(() => {
   <h1 class="h3 mb-4 text-gray-800">List Surat Masuk</h1>
   <hr />
   <div>
-  <hr />
-
-  <h4 class="text-center"> Conter : {{ storeCounter.count }} </h4>
-    <div class="text-center">
-      <button @click="storeCounter.kurangCount">-</button>
-      <button @click="storeCounter.tambahCount">+</button>
-    </div>
-    <hr>
-    Hitungan andalah bilangan : {{ storeCounter.ganjilGenap }}
-    <div class="text-center">
-      <h3>edit perhitungan</h3>
-      <input v-model = 'storeCounter.count'  type="number">
-    </div>
 <table class="table" id="dataTable">
       <thead>
         <tr>

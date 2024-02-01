@@ -1,61 +1,49 @@
 <script setup>
 import { useSuratMasuk } from "@/strore/suratMasuk";
-import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
-
-const storeSuratMasuk = useSuratMasuk()
+const storeSuratMasuk = useSuratMasuk();
 
 const alert = ref(false);
 const alertError = ref(false);
+const alertMessage = ref()
+const alertMessages = ref()
 const pakai = reactive({
   state1: false,
   state2: false,
   state3: false,
 });
 
-function submitForm(e) {
-  let nomorSurat = e.target.elements.nomorSurat.value;
-  let radioStatus =
-    pakai.state1 == true ? e.target.elements.radioStatus.value : "-";
-  let tanggalSurat = e.target.elements.tanggalSurat.value;
-  let radioSifat =
-    pakai.state2 == true ? e.target.elements.radioSifat.value : "-";
-  let diterimaTanggal = e.target.elements.diterimaTanggal.value;
-  let nomorAgenda = e.target.elements.nomorAgenda.value;
-  let radio = pakai.state3 == true ? e.target.elements.radio.value : "-";
-  let dari = e.target.elements.dari.value;
-  let perihal = e.target.elements.perihal.value;
-  let fileSuratMasuk = e.target.elements.fileSuratMasuk.value;
+// console.log(formData)
 
-  const formData = {
-    nomorSurat,
-    radioStatus,
-    tanggalSurat,
-    radioSifat,
-    diterimaTanggal,
-    nomorAgenda,
-    radio,
-    dari,
-    perihal,
-    fileSuratMasuk,
-  };
+const fileSuratMasuk = (event) => {
+  const fileSelected = event.target.files[0];
+  storeSuratMasuk.data.fileSuratMasuk = fileSelected;
+  console.log(storeSuratMasuk.data.fileSuratMasuk )
+};
+//  const deteksi = computed(() => {
+
+// });
+
+const submitForm = () => {
+  const formData = new FormData();
+  Object.keys(storeSuratMasuk.data).forEach((key) => {
+    formData.append(key, storeSuratMasuk.data[key]);
+  }); 
   axios
     .post("/apikemenagbonebol/suratmasuk", formData)
     .then((response) => {
       // console.log(response.data.status);
-      // alert.value = response.data.status
-      alertError.value = response.data.status;
+      alert.value = response.data.status
+   
     })
     .catch((error) => {
-      console.error("Posting Error:", error);
+      // console.error("Posting Error:", error);
+      alertError.value = true
+      alertMessages.value = error.message
+      alertMessage.value = error.response.data.message
     });
-  // console.log(formData)
-}
-
-
-//  const deteksi = computed(() => {
-
-// });
+};
 </script>
 
 <template>
@@ -63,25 +51,28 @@ function submitForm(e) {
   <hr />
   <div
     v-if="alert"
-    class="alert alert-success alert-dismissible fade show"
+    class="alert alert-success alert-dismissible fade show text-center"
     role="alert"
   >
     <strong>Data surat masuk</strong> berhasil di simpan
+    
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div
     v-if="alertError"
-    class="alert alert-danger alert-dismissible fade show"
+    class="alert alert-danger alert-dismissible fade show text-center"
     role="alert"
   >
-    <strong>GAGAL</strong> kesalahan menyimpan data
+    <strong>GAGAL.</strong> kesalahan menyimpan data
+    <p><strong>"{{ alertMessage }}</strong>"<br>
+   <strong>"{{ alertMessages }}</strong>"</p>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form @submit.prevent="storeSuratMasuk.saveSurmas">
+  <form @submit.prevent="submitForm">
     <div class="row border mb-2">
       <div class="col-12 col-md-6">
         <div class="input-group input-group-sm">
@@ -92,7 +83,12 @@ function submitForm(e) {
           </div>
         </div>
         <div class="input-group input-group-sm">
-          <input v-model="storeSuratMasuk.data.nomorSurat" type="text" class="form-control" name="nomorSurat" />
+          <input
+            v-model="storeSuratMasuk.data.nomorSurat"
+            type="text"
+            class="form-control"
+            name="nomorSurat"
+          />
         </div>
       </div>
 
@@ -123,6 +119,7 @@ function submitForm(e) {
                   name="radioStatus"
                   id="gridRadios2"
                   value="asli"
+                  v-model="storeSuratMasuk.data.radioStatus"
                 />
                 <span>Asli</span>
               </div>
@@ -136,6 +133,7 @@ function submitForm(e) {
                   name="radioStatus"
                   id="gridRadios3"
                   value="tembusan"
+                  v-model="storeSuratMasuk.data.radioStatus"
                 />
                 <span>Tembusan</span>
               </div>
@@ -155,7 +153,12 @@ function submitForm(e) {
           </div>
         </div>
         <div class="input-group input-group-sm">
-          <input type="text" class="form-control" name="tanggalSurat" />
+          <input
+            type="text"
+            class="form-control"
+            name="tanggalSurat"
+            v-model="storeSuratMasuk.data.tanggalSurat"
+          />
         </div>
       </div>
 
@@ -171,7 +174,7 @@ function submitForm(e) {
               type="checkbox"
               class="custom-control-input"
               id="customSwitch2"
-              :checked="pakai.state"
+              :checked="pakai.state2"
               @change="pakai.state2 = !pakai.state2"
             />
             <label class="custom-control-label" for="customSwitch2"></label>
@@ -187,6 +190,7 @@ function submitForm(e) {
                   name="radioSifat"
                   id="gridRadios2"
                   value="sangat_segera"
+                  v-model="storeSuratMasuk.data.radioSifat"
                 />
                 <span>Sangat Segera/Kilat</span>
               </div>
@@ -200,6 +204,7 @@ function submitForm(e) {
                   name="radioSifat"
                   id="gridRadios3"
                   value="segera"
+                  v-model="storeSuratMasuk.data.radioSifat"
                 />
                 <span>Segera</span>
               </div>
@@ -213,6 +218,7 @@ function submitForm(e) {
                   name="radioSifat"
                   id="gridRadios3"
                   value="biasa"
+                  v-model="storeSuratMasuk.data.radioSifat"
                 />
                 <span>Biasa</span>
               </div>
@@ -222,20 +228,45 @@ function submitForm(e) {
       </div>
     </div>
 
-    <div class="row mb-2 border">
-      <div class="col col-md-6">
-        <div class="input-group input-group-sm">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm"
-              >Diterima Tanggal :</span
-            >
+
+      <div class="row mb-2 border">
+        <div class="col col-md-6">
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm"
+                >Diterima Tanggal :</span
+              >
+            </div>
+          </div>
+          <div class="input-group input-group-sm">
+            <input
+              type="text"
+              class="form-control"
+              name="diterimaTanggal"
+              v-model="storeSuratMasuk.data.diterimaTanggal"
+            />
           </div>
         </div>
-        <div class="input-group input-group-sm">
-          <input type="text" class="form-control" name="diterimaTanggal" />
+        <div class="col col-md-6">
+          <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm"
+                >Lampiran</span
+              >
+            </div>
+          </div>
+          <div class="input-group input-group-sm">
+            <input
+              type="text"
+              class="form-control"
+              name="lampiranj"
+              v-model="storeSuratMasuk.data.lampiran"
+            />
+          </div>
         </div>
       </div>
-    </div>
+ 
+
 
     <div class="row border mb-2">
       <div class="col-12 col-md-6">
@@ -247,7 +278,12 @@ function submitForm(e) {
           </div>
         </div>
         <div class="input-group input-group-sm">
-          <input type="text" class="form-control" name="nomorAgenda" />
+          <input
+            type="text"
+            class="form-control"
+            name="nomorAgenda"
+            v-model="storeSuratMasuk.data.nomorAgenda"
+          />
         </div>
       </div>
       <div class="col col-md-6">
@@ -277,6 +313,7 @@ function submitForm(e) {
                   name="radio"
                   id="gridRadios2"
                   value="sangat_rahasia"
+                  v-model="storeSuratMasuk.data.radio"
                 />
                 <span>Sangat Rahasia</span>
               </div>
@@ -290,6 +327,7 @@ function submitForm(e) {
                   name="radio"
                   id="gridRadios3"
                   value="rahasia"
+                  v-model="storeSuratMasuk.data.radio"
                 />
                 <span>Rahasia</span>
               </div>
@@ -303,6 +341,7 @@ function submitForm(e) {
                   name="radio"
                   id="gridRadios3"
                   value="biasa"
+                  v-model="storeSuratMasuk.data.radio"
                 />
                 <span>Biasa</span>
               </div>
@@ -322,7 +361,12 @@ function submitForm(e) {
           </div>
         </div>
         <div class="input-group input-group-sm">
-          <input type="text" name="dari" class="form-control" />
+          <input
+            type="text"
+            name="dari"
+            class="form-control"
+            v-model="storeSuratMasuk.data.dari"
+          />
         </div>
       </div>
       <div class="col-12 col-md-6">
@@ -333,7 +377,12 @@ function submitForm(e) {
             </span>
           </div>
           <div class="input-group input-group-sm">
-            <input type="text" name="perihal" class="form-control" />
+            <input
+              type="text"
+              name="perihal"
+              class="form-control"
+              v-model="storeSuratMasuk.data.perihal"
+            />
           </div>
         </div>
       </div>
@@ -354,6 +403,7 @@ function submitForm(e) {
               id="inputGroupFile01"
               aria-describedby="inputGroupFileAddon01"
               name="fileSuratMasuk"
+              @change="fileSuratMasuk"
             />
             <label class="custom-file-label" for="inputGroupFile01"
               >Pilih File</label
