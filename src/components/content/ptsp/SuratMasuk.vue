@@ -1,31 +1,36 @@
 <script setup>
 import { useSuratMasuk } from "@/strore/suratMasuk";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import axios from "axios";
+import { useAlert } from "@/strore/alert";
+import divAlert from "@/components/Alert.vue"
+import router from "../../../router";
 const storeSuratMasuk = useSuratMasuk();
+const storeAlert = useAlert();
 
-const alert = ref(false);
-const alertError = ref(false);
-const alertMessage = ref()
-const alertMessages = ref()
 const pakai = reactive({
   state1: false,
   state2: false,
   state3: false,
 });
 
-// console.log(formData)
+
 
 const fileSuratMasuk = (event) => {
   const fileSelected = event.target.files[0];
+  console.log("🚀 ~ fileSuratMasuk ~ fileSelected :", fileSelected )
   storeSuratMasuk.data.fileSuratMasuk = fileSelected;
-  console.log(storeSuratMasuk.data.fileSuratMasuk )
 };
 //  const deteksi = computed(() => {
 
 // });
 
+onMounted(()=>{
+  storeAlert.$reset()
+})
+
 const submitForm = () => {
+  storeAlert.$reset()
   const formData = new FormData();
   Object.keys(storeSuratMasuk.data).forEach((key) => {
     formData.append(key, storeSuratMasuk.data[key]);
@@ -33,45 +38,26 @@ const submitForm = () => {
   axios
     .post("/apikemenagbonebol/suratmasuk", formData)
     .then((response) => {
-      // console.log(response.data.status);
-      alert.value = response.data.status
-   
+      storeAlert.succesAlert.statusAlert = true
+      storeAlert.succesAlert.message = response.data.message
+      storeSuratMasuk.$reset()
+
     })
-    .catch((error) => {
-      // console.error("Posting Error:", error);
-      alertError.value = true
-      alertMessages.value = error.message
-      alertMessage.value = error.response.data.message
+    .catch((error) => {    
+      storeAlert.errorAlert.statusAlert = true
+      storeAlert.errorAlert.message = error.response.data.message
+      storeAlert.errorAlert.statusText = error.response.statusText
+   
+
     });
 };
+    
 </script>
 
 <template>
   <h1 class="h3 mb-4 text-gray-800">Surat Masuk</h1>
   <hr />
-  <div
-    v-if="alert"
-    class="alert alert-success alert-dismissible fade show text-center"
-    role="alert"
-  >
-    <strong>Data surat masuk</strong> berhasil di simpan
-    
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div
-    v-if="alertError"
-    class="alert alert-danger alert-dismissible fade show text-center"
-    role="alert"
-  >
-    <strong>GAGAL.</strong> kesalahan menyimpan data
-    <p><strong>"{{ alertMessage }}</strong>"<br>
-   <strong>"{{ alertMessages }}</strong>"</p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+<divAlert/>
   <form @submit.prevent="submitForm">
     <div class="row border mb-2">
       <div class="col-12 col-md-6">
@@ -406,13 +392,15 @@ const submitForm = () => {
               @change="fileSuratMasuk"
             />
             <label class="custom-file-label" for="inputGroupFile01"
-              >Pilih File</label
+              >{{ storeSuratMasuk.data.fileSuratMasuk.name }}</label
             >
           </div>
         </div>
       </div>
     </div>
-
+    <div class="progress mb-2" style="height: 2px;">
+   <div class="progress-bar progress-bar-striped" role="progressbar" style="width:" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+ </div>
     <button type="submit" class="btn btn-primary">Kirim</button>
   </form>
 </template>

@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-
 export const useSuratMasuk = defineStore({
   id: "surmas",
   state: () => ({
@@ -10,17 +8,14 @@ export const useSuratMasuk = defineStore({
       tanggalSurat: "",
       radioSifat: "",
       diterimaTanggal: "",
-      lampiran:"",
+      lampiran: "",
       nomorAgenda: "",
       radio: "",
       dari: "",
       perihal: "",
-      fileSuratMasuk:"",
+      fileSuratMasuk: "",
     },
+    tampilData: "",
   }),
-  actions: {
-    saveSurmas() {
-      //
-    },
-  },
+  actions: {},
 });

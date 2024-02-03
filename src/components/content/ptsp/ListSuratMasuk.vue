@@ -1,36 +1,83 @@
 <script setup>
-import { onBeforeUnmount, onMounted } from "vue";
-import { useCounterStore } from "@/strore/counter";
+import axios from 'axios'
+import { ref, onMounted, nextTick} from "vue";
+import { useSuratMasuk } from "@/strore/suratMasuk";
+import { useAlert } from "@/strore/alert";
+import $ from 'jquery'
 
-const storeCounter = useCounterStore()
+import alertHandling from '@/components/Alert.vue'
 
-const initDataTable = () => {
-  // Inisialisasi DataTable
-  $("#dataTable").DataTable();
-};
 
-const destroyDataTable = () => {
-  // Membersihkan DataTable sebelum komponen dihancurkan
-  $("#dataTable").DataTable().destroy();
-};
+const storeSuratMasuk = useSuratMasuk()
+const stortAlert = useAlert()
+const alert =  ref()
+ 
 
-onMounted(() => {
-  // Dipanggil setelah komponen dipasang
-  initDataTable();
-});
+async function tampilanData (){
+  try{
+    const response = await axios.get('/apikemenagbonebol/suratmasuk')
+      storeSuratMasuk.tampilData = response.data.data
+      nextTick(()=>{
+        $('#mtable').DataTable()
+      })
+    }
+    catch(error){
+    // console.log("🚀 ~ tampilanData ~ error:", error.response.data)
+    stortAlert.errorAlert.message = error.response.data.message
+    stortAlert.errorAlert.statusAlert = true 
+    stortAlert.errorAlert.statusText =  error.response.statusText
 
-onBeforeUnmount(() => {
-  // Dipanggil sebelum komponen dihancurkan
-  destroyDataTable();
-});
+    }
+}
+
+const hapusData = (id) => {
+  alert.value = false
+  let idSurmas = id
+  let confir = confirm('Yakin untuk menghapus data')
+  if(confir){
+   
+    axios.delete('/apikemenagbonebol/suratmasuk/'+idSurmas)
+    .then((response) =>{
+      storeSuratMasuk.tampilData = response.data.data
+      alert.value = response.data.status
+      tampilanData()
+    })
+    .catch((error)=>{
+      alert.value = false
+    })
+  }else{
+    alert('ee tidak jadi')
+  }
+}
+
+
+
+onMounted (()=>{
+  stortAlert.$reset()
+  tampilanData()
+})
+
 
 </script>
 
 <template>
   <h1 class="h3 mb-4 text-gray-800">List Surat Masuk</h1>
   <hr />
+  <alertHandling />
   <div>
-<table class="table" id="dataTable">
+    <div
+    v-if="alert"
+    class="alert alert-success alert-dismissible fade show text-center"
+    role="alert"
+  >
+    <strong>Data surat masuk</strong> berhasil di hapus
+    
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+<table class="table" id="mtable">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -42,12 +89,12 @@ onBeforeUnmount(() => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>@mdo</td>
+     <tr v-for="(surmas, index) in storeSuratMasuk.tampilData " :key='index'>
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ surmas.idSurmas }}</td>
+          <td>{{ surmas.dari }}</td>
+          <td>{{ surmas.perihal }}</td>
+          <td>{{ surmas.tanggalsurat }}</td>
           <td>
             <a href="">
               <i class="fa-regular fa-pen-to-square text-warning mr-2"></i>
@@ -55,13 +102,19 @@ onBeforeUnmount(() => {
             <a href="#">
               <i class="fa-solid fa-circle-info text-info mr-2"></i>
             </a>
-            <a href="#">
+            <a @click="hapusData(surmas.idSurmas)" >
               <i class="fa-solid fa-trash-can text-danger mr-2"></i>
             </a>
           </td>
         </tr>
-      </tbody>
-    </table> -->
+      </tbody> 
+    </table> 
+
+
 
   </div>
 </template>
+
+<style scoped>
+
+</style>
