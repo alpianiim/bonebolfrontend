@@ -1,42 +1,63 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashbord from "../components/content/Dashbord.vue";
-import Todolist from "../components/content/Todolist.vue";
-import Surmas from "../components/content/ptsp/SuratMasuk.vue";
-import listSurmas from "../components/content/ptsp/ListSuratMasuk.vue";
-import NotFound from "@/components/NotFound.vue";
-// import { useAlert } from "@/strore/alert";
 
-// const storeAlert = useAlert();
 const routes = [
   {
     path: "/",
-    component: Dashbord,
+    component: () => import("@/components/content/Dashbord.vue"),
   },
   {
     path: "/todo-list",
-    component: Todolist,
+    component: () => import("@/components/content/Todolist.vue"),
   },
   {
-    path: "/ptsp-surat-masuk",
-    component: Surmas,
+    path: "/ptsp-suratmasuk",
+    component: () => import("@/components/content/ptsp/SuratMasuk.vue"),
   },
   {
-    path: "/ptsp-list-surat-masuk",
-    component: listSurmas,
+    path: "/ptsp-monitoring",
+    component: () => import("@/components/content/ptsp/ListSuratMasuk.vue"),
   },
-  { 
-    path: "/:pathMatch(.*)*",
-    component:NotFound
- },
+  // kakemenag
+
+  {
+    path: "/detail-suratmasuk/:params",
+    component: () => import("@/components/content/ptsp/show/Details.vue"),
+    // beforeEnter: (to, from, next) => {
+    //   const kakemenag = false;
+    //   if (kakemenag) {
+    //     next();
+    //   } else {
+    //     next({ name: "NotFound" });
+    //   }
+    // },
+  },
+  {
+    path: "/update-suratmasuk",
+
+    component: () => import("@/components/content/ptsp/show/Update.vue"),
+  },
+  // kakemenag
+
+  {
+    path: "/disposisi-suratmasuk",
+    component: () => import("@/components/content/kankemenag/DisSurmas.vue"),
+  },
+  {
+    path: "/monitoring-suratmasuk",
+    component: () =>
+      import("@/components/content/kankemenag/MonitoringSurmas.vue"),
+  },
+
+  // {
+  //   path: "/:pathMatch(.*)*",
+  //   name: "NotFound",
+  //   component: () => import("@/components/NotFound.vue"),
+  // },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-router.beforeEach((to, from, next) => {
-  // Reset store Pinia sebelum navigasi
-  //  storeAlert.$reset();
-  next();
-});
+
 export default router;
