@@ -52,7 +52,9 @@ const hapusData = (id) => {
   let confir = confirm('Yakin untuk menghapus data')
   if (confir) {
 
-    axios.delete('suratmasuk' + idSurmas)
+    axios.delete('suratmasuk' + idSurmas, {
+      withCredentials : true
+    })
       .then((response) => {
         stortAlert.succesAlert.statusAlert = true
         stortAlert.succesAlert.message = response.data.message

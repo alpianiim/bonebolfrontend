@@ -48,7 +48,6 @@ const submitForm = () => {
       storeAlert.succesAlert.statusAlert = true
       storeAlert.succesAlert.message = response.data.message
       storeSuratMasuk.$reset()
-
     })
     .catch((error) => {
       storeAlert.errorAlert.statusAlert = true
@@ -134,7 +133,8 @@ const submitForm = () => {
               </div>
             </div>
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" name="tanggalSurat" v-model="storeSuratMasuk.data.tanggalSurat" />
+              <input type="date" class="form-control" name="tanggalSurat" v-model="storeSuratMasuk.data.tanggalSurat" />
+              
             </div>
           </div>
 
@@ -193,7 +193,7 @@ const submitForm = () => {
               </div>
             </div>
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" name="diterimaTanggal"
+              <input type="date" class="form-control" name="diterimaTanggal"
                 v-model="storeSuratMasuk.data.diterimaTanggal" />
             </div>
           </div>
@@ -304,7 +304,7 @@ const submitForm = () => {
                 <input type="file" class="custom-file-input" id="inputGroupFile01"
                   aria-describedby="inputGroupFileAddon01" name="fileSuratMasuk" @change="fileSuratMasuk" />
                 <label class="custom-file-label" for="inputGroupFile01">{{ storeSuratMasuk.data.fileSuratMasuk.name
-                }}</label>
+                  }}</label>
               </div>
             </div>
           </div>

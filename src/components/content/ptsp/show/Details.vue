@@ -1,10 +1,12 @@
 <script setup>
 import { onMounted } from "vue"
 import { useDetailSurmas } from "@/strore/detailSurmas"
+import { useUrl } from "@/strore/urlServer"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
 const storeDetail = useDetailSurmas()
+const storeUrl = useUrl()
 storeDetail.getDetail(route.params.params)
 
 </script>
@@ -118,8 +120,8 @@ storeDetail.getDetail(route.params.params)
           </div>
         </div>
         <div class="col-12 col-md-5">
-          <iframe :src="'http://192.168.1.21/apikemenagbonebol/file/' + storeDetail.detail.filesurat" frameborder="0"
-            width="100%" height="650px"></iframe>
+          <iframe :src="storeUrl.urlServer + 'file/' + storeDetail.detail.filesurat" frameborder="0" width="100%"
+            height="650px"></iframe>
         </div>
 
       </div>

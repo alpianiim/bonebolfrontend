@@ -1,11 +1,13 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useDisposisi } from "@/strore/disposisi"
+import { useUrl } from "@/strore/urlServer"
 import axios from "axios"
 import divAlert from "@/components/alert.vue"
 import { useAlert } from "@/strore/alert"
 import { onBeforeRouteLeave } from "vue-router";
 
+const storeUrl = useUrl()
 const storeAlert = useAlert()
 const storDispo = useDisposisi()
 const detailSurat = ref(false)
@@ -92,6 +94,7 @@ onBeforeRouteLeave(() => {
 })
 
 </script>
+
 <template>
   <h1 class='h3 mb-4 text-gray-800'>Disposisi Surat Masuk</h1>
   <hr />
@@ -102,8 +105,8 @@ onBeforeRouteLeave(() => {
         <div class=" border rounded-lg shadow-sm mb-3 p-3" v-if="daftarSurat">
           <p class="text-center">
             <strong :class="storDispo.dataDispo.length == 0 ? 'text-success' : 'text-warning'">{{
-              storDispo.dataDispo.length
-            }}</strong> Surat Masuk Belum di Disposisi
+          storDispo.dataDispo.length
+        }}</strong> Surat Masuk Belum di Disposisi
           </p>
           <hr>
           <div v-if="storDispo.dataDispo.length == 0" class="text-center text-success">
@@ -147,9 +150,9 @@ onBeforeRouteLeave(() => {
 
           <hr>
           <div class="d-flex justify-content-center">
-            <vue-awesome-paginate pagination-container-class="pagination pagination-sm" paginate-buttons-class="page-link"
-              :total-items="storDispo.dataDispo.length" :items-per-page="perPage" :on-click="onPageChange"
-              v-model="currentPage" />
+            <vue-awesome-paginate pagination-container-class="pagination pagination-sm"
+              paginate-buttons-class="page-link" :total-items="storDispo.dataDispo.length" :items-per-page="perPage"
+              :on-click="onPageChange" v-model="currentPage" />
           </div>
 
         </div>
@@ -258,7 +261,7 @@ onBeforeRouteLeave(() => {
               <h3 class='h6 mb-4 text-gray-800'>Surat Masuk</h3>
               <div style=" overflow: hidden; margin: 15px auto; max-width: 880px;">
                 <iframe class="content_viewport" scrolling="no"
-                  :src="'http://192.168.1.38/apikemenagbonebol/file/' + storDispo.fileSurmas" frameborder="0" width="100%"
+                  :src="storeUrl.urlServer + 'file/' + storDispo.fileSurmas" frameborder="0" width="100%"
                   height="600px"></iframe>
               </div>
             </div>
@@ -268,6 +271,7 @@ onBeforeRouteLeave(() => {
     </div>
   </div>
 </template>
+
 <style scoped>
 .v-enter-active,
 .v-leave-active {
