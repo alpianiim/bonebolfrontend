@@ -1,11 +1,10 @@
 <script setup>
 import { useAuth } from '@/strore/auth';
 import { useRouter } from 'vue-router'
-import { VueCookies } from 'vue-cookies';
+
 const router = useRouter()
 
 const auth = useAuth()
-const cok = VueCookies
 
 function authLogOut() {
 
@@ -21,6 +20,9 @@ function authLogOut() {
 <template>
   <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
     <!-- Sidebar Toggle (Topbar) -->
+    <!-- Add logging statement for debugging purposes -->
+
+    <!-- End of logging statement -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
       <i class="fa fa-bars"></i>
     </button>
@@ -45,7 +47,8 @@ function authLogOut() {
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <span class="mr-2 d-none d-lg-inline text-gray-600 small">PTSP</span>
+          <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth.user.nama_depan + " " +
+            auth.user.nama_belekang }}</span>
           <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" />
         </a>
         <!-- Dropdown - User Information -->
@@ -63,7 +66,7 @@ function authLogOut() {
       </li>
     </ul>
   </nav>
-  <!-- Logout Modal-->
+  <!-- Logout Modal -->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

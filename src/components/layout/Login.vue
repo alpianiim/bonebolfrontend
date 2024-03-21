@@ -4,7 +4,8 @@ import { useAlert } from "@/strore/alert"
 import { nextTick, onMounted, reactive } from "vue";
 import divAlert from "@/components/alert.vue"
 import { useAuth } from "@/strore/auth";
-import { useRouter, onBeforeRouteUpdate } from 'vue-router'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
+
 
 
 
@@ -26,53 +27,38 @@ const login = async () => {
   Object.keys(data).forEach((key) => {
     formData.append(key, data[key])
   })
-
   try {
     const respon = await axios.post('login', formData)
     sessionStorage.setItem("token", respon.data.token);
     sessionStorage.setItem("otentikasi", true)
-
-    nextTick(() => {
-      router.go("/dashboard")
-      auth.getUser()
-    })
-
-    // localStorage.setItem("otentikasi", true);
-
+    sessionStorage.setItem("id", respon.data.data.id)
+    sessionStorage.setItem("user_group", respon.data.data.user_group)
+    auth.getUser()
+    router.push({ name: 'dashboard' }) // push ke route dashboard
   } catch (err) {
-
     storeAlert.errorAlert.statusAlert = true
     storeAlert.errorAlert.message = err.response.data.message
     storeAlert.errorAlert.statusText = err.response.statusText
   }
-
-
-
-
 }
+
+
 
 onMounted(() => {
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("otentikasi");
+  sessionStorage.removeItem("user_group");
+  sessionStorage.removeItem("id");
 })
 
 // onBeforeRouteLeave(() => {
-//   const otentikasi = sessionStorage.removeItem("otentikasi");
-//   if (otentikasi==null) return false
-//   else return true
-//   // sessionStorage.removeItem("token");
-//   // sessionStorage.removeItem("otentikasi");
 
+//   if (auth.otentikasi === false) return false
+//   else return true
+//   // 
 // })
 
-onBeforeRouteUpdate(() => {
-  const otentikasi = sessionStorage.removeItem("otentikasi");
-  if (otentikasi === null) return false
-  else return true
-  // sessionStorage.removeItem("token");
-  // sessionStorage.removeItem("otentikasi");
 
-})
 
 
 </script>
@@ -81,13 +67,13 @@ onBeforeRouteUpdate(() => {
 
   <div class="" style="height:100vb;">
     <div class="container">
-      <!-- Outer Row -->
+
       <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-12 col-md-6">
           <div class="card o-hidden border-0 shadow-lg my-5 bg-gradient-info ">
             <div class="card-body p-0">
 
-              <!-- Nested Row within Card Body -->
+
               <div class="row">
                 <div class="col-lg-12">
                   <div class="p-5">
@@ -126,7 +112,7 @@ onBeforeRouteUpdate(() => {
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
+
   </div>
 </template>
 

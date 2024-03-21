@@ -1,7 +1,9 @@
 <script setup>
 import { useHak } from '@/strore/hakakses';
+import { useAuth } from '@/strore/auth';
 
 const akses = useHak()
+const auth = useAuth()
 </script>
 
 <template>
@@ -36,26 +38,45 @@ const akses = useHak()
     <hr class="sidebar-divider" />
 
 
-    <!-- <div v-if="akses.ptsp"> -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-        aria-controls="collapseTwo">
-        <i class="fa-regular fa-clipboard"></i>
-        <span>Surat Masuk</span>
-      </a>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">PTSP</h6>
-          <router-link active-class="active" class="collapse-item" to="/ptsp-suratmasuk">Input Surat Masuk</router-link>
-          <router-link active-class="active" class="collapse-item" to="/ptsp-monitoring">Monitoring
-            Disposisi</router-link>
+    <div v-if="auth.user_group == 1">
+      <li class="nav-item mb-0">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true"
+          aria-controls="collapseAdmin">
+          <i class="fa-regular fa-clipboard"></i>
+          <span>Admin</span>
+        </a>
+        <div id="collapseAdmin" class="collapse" aria-labelledby="headingAdmin" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Managament User</h6>
+            <router-link active-class="active" class="collapse-item" to="/buat-otentikasi">Buat Otentikasi</router-link>
+            <router-link active-class="active" class="collapse-item" to="/list-otentikasi">List Otentikasi</router-link>
+          </div>
         </div>
-      </div>
-    </li>
-    <!-- </div> -->
-    <!-- PTSP -->
+      </li>
+    </div>
 
-    <div v-if="akses.kakemenag">
+    <div v-if="auth.user_group == 2">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+          aria-controls="collapseTwo">
+          <i class="fa-regular fa-clipboard"></i>
+          <span>Surat Masuk</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">PTSP</h6>
+            <router-link active-class="active" class="collapse-item" to="/ptsp-suratmasuk">Input Surat
+              Masuk</router-link>
+            <router-link active-class="active" class="collapse-item" to="/ptsp-monitoring">Monitoring
+              Disposisi</router-link>
+          </div>
+        </div>
+      </li>
+    </div>
+
+
+    <!-- PTSP -->
+    <div v-if="auth.user_group == 3">
       <!-- kakankemenag -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -74,7 +95,7 @@ const akses = useHak()
       </li>
     </div>
 
-    <div v-if="akses.pimpinan">
+    <div v-if="auth.user_group == 3">
       <!-- Unsur Pimpinan -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#unsurpimpinan" aria-expanded="true"
@@ -94,7 +115,7 @@ const akses = useHak()
       </li>
     </div>
 
-    <div v-if="akses.petugas">
+    <div v-if="auth.user_group == 5">
       <!-- Petugas -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#petugas" aria-expanded="true"
@@ -114,27 +135,28 @@ const akses = useHak()
       </li>
     </div>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider" />
 
-    <!-- Heading -->
-    <div class="sidebar-heading">Addons</div>
+    <div
+      v-if="auth.user_group == 0 || auth.user_group == 2 || auth.user_group == 1 || auth.user_group == 4 || auth.user_group == 5">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true"
+          aria-controls="collapseUser">
+          <i class="fa-regular fa-clipboard"></i>
+          <span>Tindak Lanjut</span>
+        </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="collapseUser" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Pegawai</h6>
+            <router-link active-class="active" class="collapse-item" to="/tindaklanjut-suratmasuk">Surat
+              Masuk</router-link>
+            <!-- <router-link active-class="active" class="collapse-item" to="/ptsp-monitoring">Monitoring -->
+            <!-- Disposisi</router-link> -->
+          </div>
+        </div>
+      </li>
+    </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-      <a class="nav-link" href="charts.html">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>Charts</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-      <a class="nav-link" href="tables.html">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Tables</span></a>
-    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />

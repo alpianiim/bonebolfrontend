@@ -1,59 +1,39 @@
 import { defineStore } from "pinia";
-import axios from "axios"
+import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from 'vue-router'
+import router from "../router";
 
-
-
-export const useAuth = defineStore('auth-store', () => {
-  const token = ref(null)
-  const user = ref({})
-  const otentikasi = ref(false)
-
-
-  // Fungsi untuk melakukan login
-  function authLogin(data) {
-    return new Promise((resolve, reject) => {
-      axios.post('login', data)
-        .then(res => {
-          if (res.status == 200) {
-            token.value = `Bearer ${res.data.token}`;
-            user.value = res.data.user;
-            otentikasi.value = true;
-            resolve(res.data)
-          } else {
-            reject(res.response.data.message)
-          }
-        })
-        .catch(err => reject(err))
-    })
-
-  }
-
-  // fungsi logout /keluar dari session
-
+export const useAuth = defineStore("auth-store", () => {
+  const token = ref(null);
+  const user = ref({});
+  const otentikasi = ref(false);
+  const user_group = ref();
+  const id = ref();
 
   const getUser = () => {
-    axios.get('user')
-      .then(res => {
-        otentikasi.value = true
-        user.value = res.data.data
+    const id = sessionStorage.getItem("id");
+    axios
+      .get("user/" + id)
+      .then((res) => {
+        user_group.value = sessionStorage.getItem("user_group");
+        otentikasi.value = true;
+        user.value = res.data.data;
       })
-      .catch(e => {
-        sessionStorage.removeItem("otentikasi")
-        // sessionStorage.removeItem("token")
-        otentikasi.value = false
+      .catch((e) => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("otentikasi");
+        sessionStorage.removeItem("user_group");
+        sessionStorage.removeItem("id");
+        otentikasi.value = false;
       });
-  }
-
+  };
 
   // Getter yang akan di gunakan pada komponen lainnya untuk mengakses isi state diatas
   return {
     token,
     user,
     otentikasi,
-    authLogin,
-    getUser
-  }
-
-})
+    getUser,
+    user_group,
+  };
+});
