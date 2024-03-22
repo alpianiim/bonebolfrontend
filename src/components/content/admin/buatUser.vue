@@ -4,7 +4,6 @@ import axios from "axios";
 import { useAlert } from "@/strore/alert";
 import alertHandling from '@/components/Alert.vue'
 import { onBeforeRouteLeave } from 'vue-router'
-import * as XLSX from 'xlsx'
 const stortAlert = useAlert()
 
 const state = reactive({
@@ -120,7 +119,7 @@ const batal = (() => {
         <hr>
         <div class="row">
           <div class="col-12 col-md-6 mb-4">
-            <div class="input-group input-group-sm">
+            <div class="input-group input-group-sm" >
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Username :</span>
               </div>

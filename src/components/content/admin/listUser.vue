@@ -9,6 +9,7 @@ import { onBeforeRouteLeave } from 'vue-router'
 
 const userData = ref([])
 const storeAlert = useAlert()
+const idUse = sessionStorage.getItem("id");
 
 const getData = async () => {
     try {
@@ -25,6 +26,10 @@ const getData = async () => {
 }
 
 const hapusUser = async (id) => {
+    if(idUse == id){
+        alert('Tidak Bisa Menghapus User Ini')
+        return false
+    }
     storeAlert.$reset()
     $('#utable').DataTable().destroy()
     let confirmation = window.confirm('Apakah Anda Yakin Ingin Menghapus User?')
@@ -63,7 +68,7 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-    <h1 class="h3 mb-4 text-gray-800">List Surat Masuk</h1>
+    <h1 class="h3 mb-4 text-gray-800">List User Otentikasi</h1>
     <hr />
     <divAlert />
     <div>
@@ -84,15 +89,14 @@ onBeforeRouteLeave(() => {
                                 <th scope="row">{{ index + 1 }}</th>
                                 <td>{{ user.username }}</td>
                                 <td>
-                                    <span v-if="user.user_group === '0'" class="badge badge-secondary">User</span>
-                                    <span v-else-if="user.user_group === '1'" class="badge badge-primary">Admin</span>
+                                    <span v-if="user.user_group === '0'" class="badge badge-secondary">Pegawai</span>
+                                    <span v-else-if="user.user_group === '1'" class="badge badge-info">Admin</span>
                                     <span v-else-if="user.user_group === '2'" class="badge badge-primary">PTSP</span>
-                                    <span v-else-if="user.user_group === '3'" class="badge badge-primary">Kakan
-                                        Kemenag</span>
-                                    <span v-else-if="user.user_group === '4'" class="badge badge-primary">Atasan
-                                        Langsung</span>
-                                    <span v-else-if="user.user_group === '5'"
-                                        class="badge badge-primary">Arsiparis</span>
+                                    <span v-else-if="user.user_group === '3'" class="badge badge-danger">Kepala
+                                        Kantor</span>
+                                    <span v-else-if="user.user_group === '4'"
+                                        class="badge badge-warning">Kasubag/Kasi</span>
+                                    <span v-else-if="user.user_group === '5'" class="badge badge-dark">Arsiparis</span>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
