@@ -12,15 +12,14 @@ const stortAlert = useAlert()
 
 
 
-
 </script>
 
 <template>
-    <h1 class='h3 mb-4 text-gray-800'>Monitoring Disposisi Lanjutan</h1>
+    <h1 class='h3 mb-4 text-gray-800'>Monitoring Tindak Lanjut  </h1>
     <hr />
     <divAlert />
 
 
-
+    
 </template>
 <style scoped></style>

@@ -33,8 +33,8 @@ const login = async () => {
     sessionStorage.setItem("otentikasi", true)
     sessionStorage.setItem("id", respon.data.data.id)
     sessionStorage.setItem("user_group", respon.data.data.user_group)
-    auth.getUser()
-    router.push({ name: 'dashboard' }) // push ke route dashboard
+    // await auth.getUser()
+    router.push('/dashboard')
   } catch (err) {
     storeAlert.errorAlert.statusAlert = true
     storeAlert.errorAlert.message = err.response.data.message

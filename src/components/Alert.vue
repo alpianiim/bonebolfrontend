@@ -20,9 +20,6 @@ const storeAlert = useAlert()
       <strong >{{ storeAlert.errorAlert.statusText }}</strong><br />
       <span >{{ storeAlert.errorAlert.message }}</span>
     </p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
 </template>
 

@@ -88,14 +88,16 @@ const auth = useAuth()
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Kepala</h6>
             <router-link class="collapse-item" to="/disposisi-suratmasuk" active-class="active">Disposisi</router-link>
-            <router-link class="collapse-item" to="/monitoring-suratmasuk" active-class="active">Disposisi
+            <router-link class="collapse-item" to="/monitoring-disposisi" active-class="active">Disposisi
               Lanjutan</router-link>
+            <router-link class="collapse-item" to="/monitoring-tindaklanjut" active-class="active">Tindak
+              Lanjut</router-link>
           </div>
         </div>
       </li>
     </div>
 
-    <div v-if="auth.user_group == 3">
+    <div v-if="auth.user_group == 4">
       <!-- Unsur Pimpinan -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#unsurpimpinan" aria-expanded="true"

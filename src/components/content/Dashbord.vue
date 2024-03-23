@@ -1,12 +1,12 @@
 <script setup>
 import { useHak } from '@/strore/hakakses';
-import { onBeforeMount, onMounted } from 'vue';
+import { useRouter } from "vue-router"
+import { useAuth } from "@/strore/auth";
+import { watch } from 'vue'
 
-const akses = useHak()
+const router = useRouter()
+const auth = useAuth();
 
-onMounted(() => {
-
-})
 
 </script>
 

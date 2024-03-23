@@ -14,7 +14,7 @@ import { useAuth } from "@/strore/auth";
 import "vue-awesome-paginate/dist/style.css";
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.baseURL = "http://192.168.1.45./apikemenagbonebol/";
+axios.defaults.baseURL = "http://192.168.1.34/apikemenagbonebol/";
 axios.defaults.withCredentials = true;
 const axiosInterceptor = axios.interceptors.request.use(
   (config) => {
@@ -42,9 +42,10 @@ const app = createApp(App);
 
 app.use(pinia);
 
-const auth = useAuth();
-// await auth.getUser()
+// const auth = useAuth();
+// await auth.getUser();
+
 
 app.use(router).use(VueAwesomePaginate);
 app.mount("#app");
-// })()
+// })();

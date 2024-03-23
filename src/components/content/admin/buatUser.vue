@@ -4,7 +4,11 @@ import axios from "axios";
 import { useAlert } from "@/strore/alert";
 import alertHandling from '@/components/Alert.vue'
 import { onBeforeRouteLeave } from 'vue-router'
+import { useUrl } from "@/strore/urlServer"
+
 const stortAlert = useAlert()
+const storeUrl = useUrl()
+
 
 const state = reactive({
   user: {
@@ -49,9 +53,8 @@ const handleUploadFile = async () => {
   stortAlert.$reset()
   const formData = new FormData();
   formData.append("excel", state.user.dataExcel);
-
   try {
-    const res = await axios.post("otentikasi/excel-upload", formData);
+    const res = await axios.post("otentikasi/excel_upload", formData);
     stortAlert.succesAlert.statusAlert = true
     stortAlert.succesAlert.message = res.data.message
   } catch (error) {
@@ -61,29 +64,6 @@ const handleUploadFile = async () => {
   }
 }
 
-
-
-
-
-
-const downloadExcelFile = async () => {
-  try {
-    const response = await axios.get(
-      "otentikasi/excel-download",
-      { responseType: "blob" }
-    );
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "dataUser.xlsx");
-    document.body.appendChild(link);
-    link.click();
-  } catch (error) {
-    stortAlert.errorAlert.message = error.response.data.message
-    stortAlert.errorAlert.statusAlert = true
-    stortAlert.errorAlert.statusText = error.response.statusText
-  }
-};
 
 
 onBeforeRouteLeave(() => {
@@ -119,7 +99,7 @@ const batal = (() => {
         <hr>
         <div class="row">
           <div class="col-12 col-md-6 mb-4">
-            <div class="input-group input-group-sm" >
+            <div class="input-group input-group-sm">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Username :</span>
               </div>
@@ -193,10 +173,11 @@ const batal = (() => {
             <div class="alert alert-secondary">
 
               Anda bisa unggah user sekaligus, menggunakan format yang di sediakan. Silahkan
-              <a style="color: blue; text-decoration: underline; cursor: pointer" @click="downloadExcelFile">DOWNLOAD
+              <a style="color: blue; text-decoration: underline; cursor: pointer"
+                :href="storeUrl.urlServer + '/excel_otentikasi'" target="_blank">DOWNLOAD
                 Disini.</a>
 
-              <form action="">
+              <form @submit.prevent="handleUploadFile">
 
                 <div class="input-group input-group-sm mt-2">
                   <div class="custom-file">
@@ -204,7 +185,7 @@ const batal = (() => {
                       id="validatedInputGroupCustomFile" required>
                     <label class="custom-file-label" for="validatedInputGroupCustomFile"
                       v-bind:data-file-name="state.file.name">{{
-        state.file.name || 'Pilih File' }}</label>
+                      state.file.name || 'Pilih File' }}</label>
                   </div>
                   <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="button" @click="handleUploadFile">

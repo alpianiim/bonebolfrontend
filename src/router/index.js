@@ -12,83 +12,78 @@ const routes = [
     },
   },
   {
+    path: "/update-user",
+    component: () => import("@/components/layout/UpdateUser.vue"),
+    name: "update-user",
+    meta: {
+      harusAuth: true,
+    },
+  },
+  {
     path: "/",
     component: () => import("@/components/Wrapper.vue"),
     meta: {
       harusAuth: true,
     },
-    beforeEnter: (to, from, next) => {
-      const otentikasi = reactive({
-        value: sessionStorage.getItem("otentikasi"),
-      });
-
-      // watch(
-      //   () => otentikasi.value,
-      //   (newValue) => sessionStorage.setItem("otentikasi", newValue)
-      // );
-
-      if (otentikasi.value) return next();
-      else return next({ name: "login" });
-    },
     children: [
       {
         path: "buat-otentikasi",
         component: () => import("@/components/content/admin/buatUser.vue"),
-        harusAuth: true,
-        beforeEnter: (to, from, next) => {
-          const admin = sessionStorage.getItem("user_group");
-          if (admin == 1) return next();
-          else return next(from);
-        },
+        // harusAuth: true,
+        // beforeEnter: (to, from, next) => {
+        //   const admin = sessionStorage.getItem("user_group");
+        //   if (admin == 1) return next();
+        //   else return next(from);
+        // },
         // == 1 ? true : false
       },
       {
         path: "list-otentikasi",
         component: () => import("@/components/content/admin/listUser.vue"),
-        harusAuth: true,
-        beforeEnter: (to, from, next) => {
-          const admin = sessionStorage.getItem("user_group");
-          if (admin == 1) return next();
-          else return next(from);
-        },
+        // harusAuth: true,
+        // beforeEnter: (to, from, next) => {
+        //   const admin = sessionStorage.getItem("user_group");
+        //   if (admin == 1) return next();
+        //   else return next(from);
+        // },
       },
       {
         path: "ubah-otentikasi",
         component: () => import("@/components/content/admin/ubahUser.vue"),
-        harusAuth: true,
-        beforeEnter: (to, from, next) => {
-          const admin = sessionStorage.getItem("user_group");
-          if (admin == 1) return next();
-          else return next(from);
-        },
+        // harusAuth: true,
+        // beforeEnter: (to, from, next) => {
+        //   const admin = sessionStorage.getItem("user_group");
+        //   if (admin == 1) return next();
+        //   else return next(from);
+        // },
       },
       {
         path: "dashboard",
         component: () => import("@/components/content/Dashbord.vue"),
         name: "dashboard",
-        harusAuth: true,
+        // harusAuth: true,
       },
       {
         path: "todo-list",
         component: () => import("@/components/content/Todolist.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
       {
         path: "ptsp-suratmasuk",
         component: () => import("@/components/content/ptsp/SuratMasuk.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
       {
         path: "ptsp-monitoring",
         component: () => import("@/components/content/ptsp/ListSuratMasuk.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
       // kakemenag
 
       {
         path: "detail-suratmasuk/:params",
         component: () => import("@/components/content/ptsp/show/Details.vue"),
-        harusAuth: true,
+        // harusAuth: true,
         // beforeEnter: (to, from, next) => {
         //   const kakemenag = false;
         //   if (kakemenag) {
@@ -101,7 +96,7 @@ const routes = [
       {
         path: "update-suratmasuk",
         component: () => import("@/components/content/ptsp/show/Update.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
       // kakemenag
 
@@ -109,26 +104,49 @@ const routes = [
         path: "disposisi-suratmasuk",
         component: () =>
           import("@/components/content/kankemenag/DisSurmas.vue"),
-        harusAuth: true,
+        // harusAuth: true,
+        
       },
       {
-        path: "monitoring-suratmasuk",
+        path: "monitoring-disposisi",
         component: () =>
           import("@/components/content/kankemenag/MonitoringSurmas.vue"),
-        harusAuth: true,
+        // harusAuth: true,
+        // beforeEnter: (to, from, next) => {
+        //   const admin = sessionStorage.getItem("user_group");
+        //   if (admin == 3) return next();
+        //   else return next(from);
+        // },
+      },
+      {
+        path: "monitoring-tindaklanjut",
+        component: () =>
+          import("@/components/content/kankemenag/MonitoringTindaklanjut.vue"),
+        // harusAuth: true,
+        beforeEnter: (to, from, next) => {
+          const admin = sessionStorage.getItem("user_group");
+          if (admin == 3) return next();
+          else return next(from);
+        },
       },
       {
         path: "ubah-user/:id",
         name: "ubahUser",
         component: () => import("@/components/content/admin/ubahUser.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
       {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
         component: () => import("@/components/NotFound.vue"),
-        harusAuth: true,
+        // harusAuth: true,
       },
+      {
+        path : "profil",
+        name : "profil",
+        component : () => import("@/components/layout/Profil.vue"),
+        // harusAuth: true,
+      }
     ],
   },
 ];
@@ -139,15 +157,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  // const auth = useAuth();
+  const auth = useAuth();
   const otentikasi = reactive({
-    value: sessionStorage.getItem("otentikasi"),
+    value: JSON.parse(sessionStorage.getItem("otentikasi")) || false,
   });
 
-  watch(
-    () => otentikasi.value,
-    (newValue) => sessionStorage.setItem("otentikasi", newValue)
-  );
 
   if (to.meta.harusAuth) {
     if (otentikasi.value) {

@@ -3,24 +3,22 @@ import Sidebar from "./Sidebar.vue"
 import ContentWrapper from "./ContentWrapper.vue"
 import { useRouter } from "vue-router"
 import { useAuth } from "@/strore/auth";
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 
 const router = useRouter()
 const auth = useAuth();
 
-auth.getUser()
+// jalankan fungsi getUser pertamakali ketika component wrapper di-mounted
+onMounted(() => {
+  auth.getUser()
+})
 
 
-watch(
-  () => sessionStorage.getItem("otentikasi"),
-  (newValue, oldValue) => {
-    if (newValue === 'false' && oldValue === undefined) {
-      console.log('melakukan redirect')
-      router.push("/login")
-    }
-  },
-  { immediate: true }
-)
+watch(() => auth.user.nomor_hp, (newValue) => {
+  if (newValue == "") {
+    router.push("update-user")
+  } 
+})
 
 
 </script>
