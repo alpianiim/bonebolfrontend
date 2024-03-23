@@ -10,9 +10,6 @@ const storeAlert = useAlert()
     <p>
        {{ storeAlert.succesAlert.message }}
       </p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <div v-if="storeAlert.errorAlert.statusAlert" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
     <strong>GAGAL...!</strong>

@@ -1,10 +1,12 @@
 <script setup>
 import { useAuth } from '@/strore/auth';
 import { useRouter } from 'vue-router'
+import { useUrl} from '@/strore/urlServer'
 
 const router = useRouter()
 
 const auth = useAuth()
+const storeUrl = useUrl()
 
 function authLogOut() {
 
@@ -48,7 +50,7 @@ function authLogOut() {
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth.user.nama_lengkap }}</span>
-          <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" />
+          <img class="img-profile rounded-circle" :src="storeUrl.urlServer + 'userimage/' + auth.user.img" />
         </a>
         <!-- Dropdown - User Information -->
         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

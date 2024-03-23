@@ -14,7 +14,7 @@ import { useAuth } from "@/strore/auth";
 import "vue-awesome-paginate/dist/style.css";
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.baseURL = "http://192.168.1.34/apikemenagbonebol/";
+axios.defaults.baseURL = "http://192.168.8.118/apikemenagbonebol/";
 axios.defaults.withCredentials = true;
 const axiosInterceptor = axios.interceptors.request.use(
   (config) => {
