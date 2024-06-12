@@ -118,51 +118,6 @@ const batal = (() => {
             <div class="input-group input-group-sm">
               <input v-model=state.user.password type="password" class="form-control" name="Password" required />
             </div>
-            <div class="mt-4 input-group input-group-sm">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm">Role Grup :</span>
-              </div>
-            </div>
-            <div class='border border-secondary rounded p-2 custom-boxRol'>
-              <div class="d-flex">
-                <div class="custom-control custom-checkbox mr-4">
-                  <input type="radio" class="boxRol" v-model="state.user.roleGroup" id="customCheck1" name="customRadio"
-                    value="1">
-                  <label
-                    class="boxRol-label-only boxRol-label border border-secondary badge badge-pill p-2 m-0 shadow-lg"
-                    for="customCheck1"
-                    :class="{ 'badge-primary': state.user.roleGroup === '1', 'badge-light': state.user.roleGroup !== '1' }">Admin</label>
-                </div>
-                <div class="custom-contro2 custom-checkbox mr-4">
-                  <input type="radio" class="boxRol" v-model="state.user.roleGroup" id="customCheck2" name="customRadio"
-                    value="2">
-                  <label class="boxRol-label-only boxRol-label border border-secondary badge badge-pill p-2  m-0"
-                    for="customCheck2"
-                    :class="{ 'badge-primary  shadow-lg': state.user.roleGroup === '2', 'badge-light': state.user.roleGroup !== '2' }">PTSP</label>
-                </div>
-                <div class="custom-contro2 custom-checkbox mr-4">
-                  <input type="radio" class="boxRol" v-model="state.user.roleGroup" id="customCheck3" name="customRadio"
-                    value="3">
-                  <label class="boxRol-label-only boxRol-label border border-secondary badge badge-pill p-2  m-0"
-                    for="customCheck3"
-                    :class="{ 'badge-primary  shadow-lg': state.user.roleGroup === '3', 'badge-light': state.user.roleGroup !== '3' }">Kepala</label>
-                </div>
-                <div class="custom-contro2 custom-checkbox mr-4">
-                  <input type="radio" class="boxRol" name="customRadio" v-model="state.user.roleGroup" id="customCheck4"
-                    value="4">
-                  <label class="boxRol-label-only boxRol-label border border-secondary badge badge-pill p-2  m-0"
-                    for="customCheck4"
-                    :class="{ 'badge-primary  shadow-lg': state.user.roleGroup === '4', 'badge-light': state.user.roleGroup !== '4' }">Kasubag/Kasi</label>
-                </div>
-                <div class="custom-contro2 custom-checkbox mr-4 ">
-                  <input type="radio" class="boxRol" name="customRadio" v-model="state.user.roleGroup" id="customCheck5"
-                    value="5">
-                  <label class="boxRol-label-only boxRol-label border border-secondary badge badge-pill p-2  m-0"
-                    for="customCheck5"
-                    :class="{ 'badge-primary  shadow-lg': state.user.roleGroup === '5', 'badge-light': state.user.roleGroup !== '5' }">Arsiparis</label>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="col-12 col-md-6 mb-3">
@@ -186,7 +141,7 @@ const batal = (() => {
                       id="validatedInputGroupCustomFile" required>
                     <label class="custom-file-label" for="validatedInputGroupCustomFile"
                       v-bind:data-file-name="state.file.name">{{
-                      state.file.name || 'Pilih File' }}</label>
+        state.file.name || 'Pilih File' }}</label>
                   </div>
                   <div class="input-group-append">
                     <button class="btn btn-outline-primary" type="button" @click="handleUploadFile">

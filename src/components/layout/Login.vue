@@ -6,9 +6,6 @@ import divAlert from "@/components/alert.vue"
 import { useAuth } from "@/strore/auth";
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 
-
-
-
 const storeAlert = useAlert()
 const auth = useAuth();
 
@@ -19,7 +16,6 @@ const data = reactive({
   password: ""
 }
 )
-
 
 const login = async () => {
   storeAlert.$reset()
@@ -32,7 +28,6 @@ const login = async () => {
     sessionStorage.setItem("token", respon.data.token);
     sessionStorage.setItem("otentikasi", true)
     sessionStorage.setItem("id", respon.data.data.id)
-    sessionStorage.setItem("user_group", respon.data.data.user_group)
     // await auth.getUser()
     router.push('/dashboard')
   } catch (err) {
@@ -41,8 +36,6 @@ const login = async () => {
     storeAlert.errorAlert.statusText = err.response.statusText
   }
 }
-
-
 
 onMounted(() => {
   sessionStorage.removeItem("token");

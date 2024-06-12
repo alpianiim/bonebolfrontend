@@ -1,9 +1,8 @@
 <script setup>
-import { useHak } from '@/strore/hakakses';
-import { useAuth } from '@/strore/auth';
 
-const akses = useHak()
+import { useAuth, useOtentikasi } from '@/strore/auth';
 const auth = useAuth()
+const storeOten = useOtentikasi()
 </script>
 
 <template>
@@ -36,10 +35,9 @@ const auth = useAuth()
 
     <!-- Divider -->
     <hr class="sidebar-divider" />
+    <div v-for="peran in storeOten.peran " :key="peran">
 
-
-    <div v-if="auth.user_group == 1">
-      <li class="nav-item mb-0">
+      <li class="nav-item mb-0" v-if="peran.id_group == '2' && peran.id_peran == '7'">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true"
           aria-controls="collapseAdmin">
           <i class="fa-regular fa-clipboard"></i>
@@ -53,10 +51,25 @@ const auth = useAuth()
           </div>
         </div>
       </li>
-    </div>
 
-    <div v-if="auth.user_group == 2">
-      <li class="nav-item">
+      <li class="nav-item" v-if="peran.id_group == '1' && peran.id_peran == '1'">
+        <a class=" nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+          aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fa-regular fa-clipboard"></i>
+          <span>Surat Masuk</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Kepala</h6>
+            <router-link class="collapse-item" to="/disposisi-suratmasuk" active-class="active">Disposisi</router-link>
+            <router-link class="collapse-item" to="/monitoring-disposisi" active-class="active">Disposisi
+              Lanjutan</router-link>
+            <router-link class="collapse-item" to="/monitoring-tindaklanjut" active-class="active">Tindak
+              Lanjut</router-link>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" v-if="peran.id_group == '2' && peran.id_peran == '3'">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
           aria-controls="collapseTwo">
           <i class="fa-regular fa-clipboard"></i>
@@ -75,9 +88,12 @@ const auth = useAuth()
     </div>
 
 
+
+
+
     <!-- PTSP -->
-    <div v-if="auth.user_group == 3">
-      <!-- kakankemenag -->
+    <!-- <div v-if="auth.user_group == 3">
+
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
           aria-expanded="true" aria-controls="collapseUtilities">
@@ -95,10 +111,10 @@ const auth = useAuth()
           </div>
         </div>
       </li>
-    </div>
+    </div> -->
 
     <div v-if="auth.user_group == 4">
-      <!-- Unsur Pimpinan -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#unsurpimpinan" aria-expanded="true"
           aria-controls="unsurpimpinan">
@@ -138,8 +154,7 @@ const auth = useAuth()
     </div>
 
 
-    <div
-      v-if="auth.user_group == 0 || auth.user_group == 2 || auth.user_group == 1 || auth.user_group == 4 || auth.user_group == 5">
+    <div v-if="storeOten.dataOten.id_group == '2' || storeOten.dataOten.id_group == '3'">
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true"
           aria-controls="collapseUser">
@@ -148,7 +163,7 @@ const auth = useAuth()
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="collapseUser" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Pegawai</h6>
+            <h6 class="collapse-header">Pelaksana Tugas</h6>
             <router-link active-class="active" class="collapse-item" to="/tindaklanjut-suratmasuk">Surat
               Masuk</router-link>
             <!-- <router-link active-class="active" class="collapse-item" to="/ptsp-monitoring">Monitoring -->

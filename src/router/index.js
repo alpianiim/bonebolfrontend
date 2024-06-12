@@ -105,7 +105,6 @@ const routes = [
         component: () =>
           import("@/components/content/kankemenag/DisSurmas.vue"),
         // harusAuth: true,
-        
       },
       {
         path: "monitoring-disposisi",
@@ -123,11 +122,6 @@ const routes = [
         component: () =>
           import("@/components/content/kankemenag/MonitoringTindaklanjut.vue"),
         // harusAuth: true,
-        beforeEnter: (to, from, next) => {
-          const admin = sessionStorage.getItem("user_group");
-          if (admin == 3) return next();
-          else return next(from);
-        },
       },
       {
         path: "ubah-user/:id",
@@ -142,11 +136,11 @@ const routes = [
         // harusAuth: true,
       },
       {
-        path : "profil",
-        name : "profil",
-        component : () => import("@/components/layout/Profil.vue"),
+        path: "profil",
+        name: "profil",
+        component: () => import("@/components/layout/Profil.vue"),
         // harusAuth: true,
-      }
+      },
     ],
   },
 ];
@@ -161,7 +155,6 @@ router.beforeEach(async (to, from, next) => {
   const otentikasi = reactive({
     value: JSON.parse(sessionStorage.getItem("otentikasi")) || false,
   });
-
 
   if (to.meta.harusAuth) {
     if (otentikasi.value) {

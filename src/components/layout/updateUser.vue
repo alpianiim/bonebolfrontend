@@ -131,13 +131,15 @@ const handleKeyUpText = (event) => {
 
 
 const logout = () => {
-  alert("Logout")
-  auth.token = null;
-  auth.user = {};
-  auth.otentikasi = false;
-  sessionStorage.removeItem('otentikasi');
-  sessionStorage.removeItem('token');
-  router.push("/login")
+  const confirmation = window.confirm('Apakah Anda yakin ingin keluar?')
+  if (confirmation) {
+    auth.token = null
+    auth.user = {}
+    auth.otentikasi = false
+    sessionStorage.removeItem('otentikasi')
+    sessionStorage.removeItem('token')
+    router.push('/login')
+  }
 }
 
 onBeforeRouteLeave(() => {
@@ -186,12 +188,13 @@ onBeforeRouteLeave(() => {
 
                   </div>
                 </div>
-                <button type="button" class="btn btn-warning mr-2" @click="logout()"> <i
+                <button type="button" class="btn-sm btn btn-warning mr-2" @click="logout()"> <i
                     class=" fa-solid fa-circle-arrow-left"></i>
                   Kembali</button>
-                <button type="reset" class="btn btn-primary mr-2"><i class="fa-brands fa-x-twitter"></i>
+                <button type="reset" class="btn-sm btn btn-primary mr-2"><i class="fa-brands fa-x-twitter"></i>
                   Batal</button>
-                <button type="submit" class="btn btn-success" v-if="submitErrorWa === true && submitErrorTe === true">
+                <button type="submit" class="btn-sm btn btn-success"
+                  v-if="submitErrorWa === true && submitErrorTe === true">
                   <i class="fa-solid fa-paper-plane"></i>
                   Simpan
                 </button>

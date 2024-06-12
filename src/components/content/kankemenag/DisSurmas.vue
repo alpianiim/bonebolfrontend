@@ -6,7 +6,10 @@ import axios from "axios"
 import divAlert from "@/components/alert.vue"
 import { useAlert } from "@/strore/alert"
 import { onBeforeRouteLeave } from "vue-router";
+import { useOtentikasi } from "@/strore/auth"
 
+
+const storeOtentikasi = useOtentikasi()
 const storeUrl = useUrl()
 const storeAlert = useAlert()
 const storDispo = useDisposisi()
@@ -14,6 +17,8 @@ const detailSurat = ref(false)
 const daftarSurat = ref(true)
 const currentPage = ref(1);
 const perPage = ref(1)
+
+storeOtentikasi.getPeran()
 
 async function getDispos() {
   try {
@@ -101,12 +106,33 @@ onBeforeRouteLeave(() => {
   <divAlert />
   <div class="card mb-3">
     <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm ">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nomor Surat</th>
+              <th>Perihal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in storDispo.dataDispo" :key="index" @click="handleDetail(item.id, item.filesurat)">
+              <td>asdlflflfl</td>
+              <td>{{ item.nomorsurat }}</td>
+              <td>asdlflflfl</td>
+              <td>Disposisi</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+<!-- 
       <Transition name="slide-fade">
         <div class=" border rounded-lg shadow-sm mb-3 p-3" v-if="daftarSurat">
           <p class="text-center">
             <strong :class="storDispo.dataDispo.length == 0 ? 'text-success' : 'text-warning'">{{
-          storDispo.dataDispo.length
-        }}</strong> Surat Masuk Belum di Disposisi
+              storDispo.dataDispo.length
+              }}</strong> Surat Masuk Belum di Disposisi
           </p>
           <hr>
           <div v-if="storDispo.dataDispo.length == 0" class="text-center text-success">
@@ -157,7 +183,7 @@ onBeforeRouteLeave(() => {
 
         </div>
 
-      </Transition>
+      </Transition> -->
       <Transition>
         <form @submit.prevent="submitDispos">
           <div class="d-flex row" v-if="detailSurat">
@@ -173,46 +199,13 @@ onBeforeRouteLeave(() => {
               <div class="mb-5">
                 <h3 class='h6 text-gray-800'>Disposisi Kakankemenag Kepada</h3>
                 <hr>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="kasubag">Kasubag Tata Usaha</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="kasubag" class="form-check-input" id="kasubag"
-                      v-model="storDispo.isDispo.disposKakan">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="pendma">Kasi Pendidikan Madrasah</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="pendma" class="form-check-input" id="pendma"
-                      v-model="storDispo.isDispo.disposKakan">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="pakis">Kasi Pakis</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="pakis" class="form-check-input" id="pakis"
-                      v-model="storDispo.isDispo.disposKakan">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="phu">Kasi PHU</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="phu" class="form-check-input" id="phu"
-                      v-model="storDispo.isDispo.disposKakan">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="bimas">Kasi Bimas Islam</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="bimas" class="form-check-input" id="bimas"
-                      v-model="storDispo.isDispo.disposKakan">
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <label class="form-check-label" for="zakat">Penyelenggara Zakat dan Wakaf</label>
-                  <div class="form-group form-check">
-                    <input type="radio" name="option" value="zakat" class="form-check-input" id="zakat"
-                      v-model="storDispo.isDispo.disposKakan">
+                <div v-for="(item, index) in storeOtentikasi.AllPeran.slice(6, 12)" :key="index">
+                  <div class="d-flex justify-content-between">
+                    <label class="form-check-label" :for="'radio' + index">{{ item.peran }}</label>
+                    <div class="form-group form-check">
+                      <input type="radio" name="option" :value="item.id_peran" class="form-check-input"
+                        :id="'radio' + index" v-model="storDispo.isDispo.disposKakan">
+                    </div>
                   </div>
                 </div>
               </div>

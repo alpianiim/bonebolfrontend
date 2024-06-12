@@ -37,3 +37,33 @@ export const useAuth = defineStore("auth-store", () => {
     user_group,
   };
 });
+
+export const useOtentikasi = defineStore("otentikasi", () => {
+  const dataOten = ref({});
+  const peran = ref({});
+  const id = sessionStorage.getItem("id");
+  const AllPeran = ref({});
+  const getOtentikasi = () => {
+    axios
+      .get("otentikasi/" + id)
+      .then((res) => {
+        dataOten.value = res.data.data;
+        peran.value = res.data.data_peran;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getPeran = () => {
+    axios
+      .get("user_peran")
+      .then((res) => {
+        AllPeran.value = res.data.data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  return { dataOten, peran, AllPeran, getOtentikasi, getPeran };
+});
